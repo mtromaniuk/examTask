@@ -1,0 +1,72 @@
+//normalize import from node_modules
+@import "../../node_modules/normalize.css/normalize";
+
+body {
+    margin: 40px;
+    background-color: rgba(230, 230, 230, 50%);
+}
+
+.app {
+    width: auto;
+    margin: 10px 20px 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    &__showResult {
+        margin-top: -.5px;
+        font-size: 15px;
+        font-style: italic;
+    }
+
+    &__h1-compareProducts {
+        margin-bottom: -20px;
+    }
+
+    &__showAllProducts {
+        width: 100%;
+        height: auto;
+        margin: 30px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        .showAllProducts {
+            &__p {
+                width: 300px;
+                height: 200px;
+                margin: 30px 5px 10px 5px;
+                padding: 10px;
+                border-top: 1px solid #9999; 
+            }
+        }
+    }
+
+    &__compareProductsWrapper {
+        width: 100%;
+        height: auto;
+        margin: 30px 30px 30px 60px;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+
+        .compareProductsWrapper {
+            &__compareResultProducts {
+                width: 300px;
+                height: 340px;
+                margin: 30px 5px;
+                padding: 20px;
+                border-top: 1px solid #9999;
+
+                p {
+                    span {
+                        font-style: oblique;
+                    }
+                }
+            }
+        } 
+    }
+}
+
+.changeStyleForSpecial {
+    color: blue;
+    border: 1px solid black;
+    padding: 5px;
+}

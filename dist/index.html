@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no">
+		<title>Testowa strona</title>
+		<link rel="stylesheet" href="/css.06291079.css">
+	<script src="/css.06291079.js"></script></head>
+	<body>
+		<div id="app">
+			<h1>Wyszukiwarka</h1>
+			<input type="search" placeholder="Wyszukaj po nazwie" v-model="inputSearch">
+			<button type="button" @click="searchProduct">Szukaj</button>
+			<p class="app__showResult" v-show="matchOrNotFunction, {display:['block']}"> {{infoMatch}} </p>
+
+			<div class="app__sort">
+				<!-- <form v-model='filterColors' @change='selectColor'>
+					<input type="checkbox"> {{color}}
+				</form> -->
+
+				<select name="brands" v-model="filterBrands" @change="selectBrand">
+					<option value="all">All</option>
+					<option v-for="brand in allBrands" :value="brand">{{brand}}</option>
+				</select>
+				<div>
+					<input type="radio" id="ALL" value="ALL" v-model="checkedColors" @change="filterColors">
+					<label for="ALL">ALL</label>
+				</div>
+				<div v-for="color in allColors">
+					<input type="radio" :id="color" :value="color" v-model="checkedColors" @change="filterColors">
+					<label :for="color">{{color}}</label>
+				</div>
+
+				Cena od 
+				<input type="number" class="priceAt" v-model="priceAt" placeholder="Podaj cenę"> do 
+				<input type="number" class="priceTo" v-model="priceTo" placeholder="Podaj cenę"> 
+				<button @click="sortPrice">Sortuj</button> 
+			</div>
+
+				<!-- LISTA WSZYSTKICH PRODUKTOW -->
+				<h1>Lista produktów</h1>
+				<p>Sortowanie produktów wg. ceny</p>
+				<button type="button" @click="sortAscending">Rosnąco</button>
+				<button type="button" @click="sortDescending">Malejąco</button>
+			<div class="app__showAllProducts">
+				
+				<div class="showAllProducts__p" v-for="product in matchDivsToPage">
+					<h3> {{product.name}} </h3>
+					<p> {{product.model}} </p>
+					<p> {{product.brand}} </p>
+					<p> {{netPriceCalculator(product.price)}} zł netto </p>
+					<p> {{product.price}}zł brutto </p>
+					<button id="compareProductButton" @click="addProductToComparision(product)" :disabled="compareProducts.length >= 3">Dodaj do porównania</button>
+				</div>
+			</div>
+			<div class="" v-for="page in pagingPages">
+				<button @click="() => switchPage(page)">{{page + 1}}</button>
+			</div>
+			<span>{{page}}</span>
+			<!-- POROWNYWARKA -->
+			
+			<h1 class="app__h1-compareProducts">Porównywarka</h1>
+			<!-- <p v-if>Porównywarka jest w tej chwili pusta. Dodaj produkt.</p> -->
+			<div class="app__compareProductsWrapper">
+				<div class="compareProductsWrapper__compareResultProducts" v-for="compareProduct in compareProducts">
+					<div v-bind:class="{changeStyleForSpecial: compareProduct.special}">
+						<button @click="deleteFromCompare(compareProduct)">Usuń z porównywarki</button>
+						<h3>{{compareProduct.name}}</h3>	
+						<p> Model: {{compareProduct.model}}</p>
+						<p> Marka:{{compareProduct.brand}}</p>						<p>{{compareProduct.price}}</p>
+						<p>{{compareProduct.netPrice}}</p>
+						<p><span>Opis: </span></p><p>{{compareProduct.description}}</p><p></p>
+						<p><span>Kolor: </span>{{compareProduct.color}}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<main id="main" class="main">
+		</main>
+		<script src="/js.fcffc47e.js"></script>
+	</body>
+</html>
