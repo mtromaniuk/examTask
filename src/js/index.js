@@ -62,13 +62,7 @@ new Vue({
 		},
 		filterFor() {
 			let asd = this.products;
-			asd = asd.filter(product => {
-				if (product.price > parseInt(this.priceAt) && product.price < parseInt(this.priceTo)) {
-					return true;
-				} else {
-					return false;
-				};
-			})
+			asd = asd.filter(product => product.price > parseInt(this.priceAt) && product.price < parseInt(this.priceTo))
 			if (this.inputSearch.length > 3) {
 				asd = asd.filter(product => {
 					const matchText = product.name.toUpperCase().includes(this.inputSearch.toUpperCase());

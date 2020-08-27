@@ -18955,13 +18955,7 @@ new _vue.default({
 
       var asd = this.products;
       asd = asd.filter(function (product) {
-        if (product.price > parseInt(_this2.priceAt) && product.price < parseInt(_this2.priceTo)) {
-          return true;
-        } else {
-          return false;
-        }
-
-        ;
+        return product.price > parseInt(_this2.priceAt) && product.price < parseInt(_this2.priceTo);
       });
 
       if (this.inputSearch.length > 3) {
