@@ -14,31 +14,28 @@
 		<div id="app">
 			<h1>Wyszukiwarka</h1>
 			<input type="search" placeholder="Wyszukaj po nazwie"  v-model='inputSearch'>
-			<button type="button" @click='searchProduct'>Szukaj</button>
+			<button type="button" @click='filterFor'>Szukaj</button>
 			<p class="app__showResult" v-show="matchOrNotFunction, {display:['block']}"> {{infoMatch}} </p>
 
 			<div class="app__sort">
-				<!-- <form v-model='filterColors' @change='selectColor'>
-					<input type="checkbox"> {{color}}
-				</form> -->
 
-				<select name='brands' v-model='filterBrands' @change='selectBrand'>
-					<option value="all">All</option>
+				<select name='brands' v-model='filterBrands' @change='filterFor'>
+					<option value="ALL">All</option>
 					<option v-for='brand in allBrands' :value='brand'>{{brand}}</option>
 				</select>
 				<div>
-					<input type="radio" id="ALL" value="ALL" v-model="checkedColors" @change="filterColors">
+					<input type="radio" id="ALL" value="ALL" v-model="checkColor" @change="filterFor">
 					<label for="ALL">ALL</label>
 				</div>
 				<div v-for="color in allColors">
-					<input type="radio" :id="color" :value="color" v-model="checkedColors" @change="filterColors">
+					<input type="radio" :id="color" :value="color" v-model="checkColor" @change="filterFor">
 					<label :for="color">{{color}}</label>
 				</div>
 
 				Cena od 
 				<input type="number" class="priceAt" v-model="priceAt" placeholder="Podaj cenę"> do 
 				<input type="number" class="priceTo" v-model="priceTo" placeholder="Podaj cenę"> 
-				<button @click="sortPrice">Sortuj</button> 
+				<button @click="filterFor">Sortuj</button> 
 			</div>
 
 				<!-- LISTA WSZYSTKICH PRODUKTOW -->
@@ -60,7 +57,6 @@
 			<div class="" v-for="page in pagingPages">
 				<button @click="() => switchPage(page)">{{page + 1}}</button>
 			</div>
-			<span>{{page}}</span>
 			<!-- POROWNYWARKA -->
 			
 			<h1 class="app__h1-compareProducts">Porównywarka</h1>

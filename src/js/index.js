@@ -17,7 +17,7 @@ new Vue({
 			filterBrands: 'ALL',
 			compareProducts: [],
 			pageOfItems: [],
-			page: 1,
+			page: 0,
 			checkColor: 'ALL',
 		}
 	},
@@ -33,51 +33,12 @@ new Vue({
 					this.foundProducts = json;
 				});
 		},
-		searchProduct() {
-			let arrayOfProducts = []
-			if (this.inputSearch.length > 3) {
-				this.products.filter(product => {
-					const matchText = product.name.toUpperCase().includes(this.inputSearch.toUpperCase()); 
-					const matchTextBrand = product.brand.toUpperCase().includes(this.inputSearch.toUpperCase());
-					const matchTextDescription = product.description.toUpperCase().includes(this.inputSearch.toUpperCase());
-					if (matchText || matchTextBrand || matchTextDescription) {
-						arrayOfProducts.push(product);
-						this.matchOrNot = true;
-					} else {
-						console.log('Brak szukanego produktu');
-						this.matchOrNot = false;
-					}
-				})
-				this.foundProducts = arrayOfProducts;
-			} else {
-				this.foundProducts = this.products;
-			}
-		},
 		netPriceCalculator(brutto) {
 			const tax = 0.23;
 			let taxValueOfProduct = (brutto * tax);
 			let netPrice = brutto - taxValueOfProduct;
 			
 			return netPrice.toFixed(2)
-		},
-		sortPrice() {
-			this.foundProducts = this.products.filter(product => {
-				console.log(product.price)
-				if (product.price > parseInt(this.priceAt) && product.price < parseInt(this.priceTo)) {
-					return true;
-				} else {
-					return false;
-				}
-			})
-		},
-		selectBrand() {
-			if (this.filterBrands !== 'all') {
-				this.foundProducts = this.products.filter(product => {
-					return product.brand === this.filterBrands;
-				})
-			} else {
-				this.foundProducts = this.products;
-			}
 		},
 		sortAscending() {
 			this.foundProducts.sort((a, b) => {
@@ -99,55 +60,57 @@ new Vue({
 		switchPage(page) {
 			this.page = page;
 		},
-		filterColors() {
-            if (this.checkedColors !== "ALL") {
-                this.foundProducts = this.products.filter(product => {
-                    return product.color === this.checkedColors;
-                })
-            } else {
-                this.foundProducts = this.products
-            }
-        }
+		filterFor() {
+			let asd = this.products;
+			asd = asd.filter(product => {
+				if (product.price > parseInt(this.priceAt) && product.price < parseInt(this.priceTo)) {
+					return true;
+				} else {
+					return false;
+				};
+			})
+			if (this.inputSearch.length > 3) {
+				asd = asd.filter(product => {
+					const matchText = product.name.toUpperCase().includes(this.inputSearch.toUpperCase());
+					const matchTextBrand = product.brand.toUpperCase().includes(this.inputSearch.toUpperCase());
+					const matchTextDescription = product.description.toUpperCase().includes(this.inputSearch.toUpperCase());
+					return matchText || matchTextBrand || matchTextDescription;
+				})
+			}
+			if (this.checkColor !== "ALL") {
+				asd = asd.filter(product => product.color === this.checkColor)
+			}
+			if (this.filterBrands !== 'ALL') {
+				asd = asd.filter(product => product.brand === this.filterBrands)
+			}
+			this.foundProducts = asd;
+		},
 	},
-computed: {
-	matchOrNotFunction() {
-		if (this.matchOrNot == true) {
-			this.infoMatch = 'Znaleziono produkt';
-			console.log('Znaleziono produkt');
-		}
-		if (this.matchOrNot == false) {
-			this.infoMatch = 'Nie znaleziono produktu';
-			console.log('nznaleziono');
-		} else if (this.matchOrNot == null) {
-			this.infoMatch = '';
-			console.log('null');
-		}
-	},
-	allBrands() {
-		const brands = new Set();
-		this.products.forEach(product => {
-			brands.add(product.brand);
-		})
-		return [...brands].sort();
-	},
-	pagingPages() {
-		let pages = Math.ceil(this.foundProducts.length / 4);
+		computed: {
+			allBrands() {
+				const brands = new Set();
+				this.products.forEach(product => {
+					brands.add(product.brand);
+				})
+				return [...brands].sort();
+			},
+			pagingPages() {
+				let pages = Math.ceil(this.foundProducts.length / 4);
 		
-		return Array.from({ length: pages }, (v, k) => k)
-	},
-	matchDivsToPage() {
-		const startIndex = this.page * 4;
-		const endIndex = this.page * 4 + 4;
+				return Array.from({ length: pages }, (v, k) => k)
+			},
+			matchDivsToPage() {
+				const startIndex = this.page * 4;
+				const endIndex = this.page * 4 + 4;
 
-		return this.foundProducts.slice(startIndex, endIndex);	
-	},
-	allColors() {
-		const colors = new Set();
-		this.products.forEach(product => {
-			colors.add(product.color);
-		})
-		return colors
-
-	},
-}
-})
+				return this.foundProducts.slice(startIndex, endIndex);
+			},
+			allColors() {
+				const colors = new Set();
+				this.products.forEach(product => {
+					colors.add(product.color);
+				})
+				return colors
+			},
+		},
+	})

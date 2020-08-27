@@ -18906,7 +18906,7 @@ new _vue.default({
       filterBrands: 'ALL',
       compareProducts: [],
       pageOfItems: [],
-      page: 1,
+      page: 0,
       checkColor: 'ALL'
     };
   },
@@ -18924,59 +18924,11 @@ new _vue.default({
         _this.foundProducts = json;
       });
     },
-    searchProduct: function searchProduct() {
-      var _this2 = this;
-
-      var arrayOfProducts = [];
-
-      if (this.inputSearch.length > 3) {
-        this.products.filter(function (product) {
-          var matchText = product.name.toUpperCase().includes(_this2.inputSearch.toUpperCase());
-          var matchTextBrand = product.brand.toUpperCase().includes(_this2.inputSearch.toUpperCase());
-          var matchTextDescription = product.description.toUpperCase().includes(_this2.inputSearch.toUpperCase());
-
-          if (matchText || matchTextBrand || matchTextDescription) {
-            arrayOfProducts.push(product);
-            _this2.matchOrNot = true;
-          } else {
-            console.log('Brak szukanego produktu');
-            _this2.matchOrNot = false;
-          }
-        });
-        this.foundProducts = arrayOfProducts;
-      } else {
-        this.foundProducts = this.products;
-      }
-    },
     netPriceCalculator: function netPriceCalculator(brutto) {
       var tax = 0.23;
       var taxValueOfProduct = brutto * tax;
       var netPrice = brutto - taxValueOfProduct;
       return netPrice.toFixed(2);
-    },
-    sortPrice: function sortPrice() {
-      var _this3 = this;
-
-      this.foundProducts = this.products.filter(function (product) {
-        console.log(product.price);
-
-        if (product.price > parseInt(_this3.priceAt) && product.price < parseInt(_this3.priceTo)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-    },
-    selectBrand: function selectBrand() {
-      var _this4 = this;
-
-      if (this.filterBrands !== 'all') {
-        this.foundProducts = this.products.filter(function (product) {
-          return product.brand === _this4.filterBrands;
-        });
-      } else {
-        this.foundProducts = this.products;
-      }
     },
     sortAscending: function sortAscending() {
       this.foundProducts.sort(function (a, b) {
@@ -18998,33 +18950,45 @@ new _vue.default({
     switchPage: function switchPage(page) {
       this.page = page;
     },
-    filterColors: function filterColors() {
-      var _this5 = this;
+    filterFor: function filterFor() {
+      var _this2 = this;
 
-      if (this.checkedColors !== "ALL") {
-        this.foundProducts = this.products.filter(function (product) {
-          return product.color === _this5.checkedColors;
+      var asd = this.products;
+      asd = asd.filter(function (product) {
+        if (product.price > parseInt(_this2.priceAt) && product.price < parseInt(_this2.priceTo)) {
+          return true;
+        } else {
+          return false;
+        }
+
+        ;
+      });
+
+      if (this.inputSearch.length > 3) {
+        asd = asd.filter(function (product) {
+          var matchText = product.name.toUpperCase().includes(_this2.inputSearch.toUpperCase());
+          var matchTextBrand = product.brand.toUpperCase().includes(_this2.inputSearch.toUpperCase());
+          var matchTextDescription = product.description.toUpperCase().includes(_this2.inputSearch.toUpperCase());
+          return matchText || matchTextBrand || matchTextDescription;
         });
-      } else {
-        this.foundProducts = this.products;
       }
+
+      if (this.checkColor !== "ALL") {
+        asd = asd.filter(function (product) {
+          return product.color === _this2.checkColor;
+        });
+      }
+
+      if (this.filterBrands !== 'ALL') {
+        asd = asd.filter(function (product) {
+          return product.brand === _this2.filterBrands;
+        });
+      }
+
+      this.foundProducts = asd;
     }
   },
   computed: {
-    matchOrNotFunction: function matchOrNotFunction() {
-      if (this.matchOrNot == true) {
-        this.infoMatch = 'Znaleziono produkt';
-        console.log('Znaleziono produkt');
-      }
-
-      if (this.matchOrNot == false) {
-        this.infoMatch = 'Nie znaleziono produktu';
-        console.log('nznaleziono');
-      } else if (this.matchOrNot == null) {
-        this.infoMatch = '';
-        console.log('null');
-      }
-    },
     allBrands: function allBrands() {
       var brands = new Set();
       this.products.forEach(function (product) {
